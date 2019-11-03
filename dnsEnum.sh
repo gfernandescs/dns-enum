@@ -36,7 +36,7 @@ __Banner__() {
     echo "--------------------- xFoo0T - DnsEnum - v$VERSION --------------------"
     echo "-----------------------------------------------------------------------"
     echo "                                                                       "
-    echo "     ----- Uso Padrão: ./dsnEnum.sh alvo.com.br worldlist.txt -----    "
+    echo "     ----- Example: ./dsnEnum.sh alvo.com.br worldlist.txt  -------    "
     echo "    @@  worldlist para brute-force para descoberta de subdominios @@   "
     echo "                                                                       "
     echo "#######################################################################"
