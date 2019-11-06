@@ -123,6 +123,15 @@ __transferZone__() {
 __Main__() {
     __basicCheck__
 
+    case $ARG_02 in
+        "-ds"|"--ds") printf "Carregar worldlist"
+            __discoverNameServers__
+            __discoverMailServers__
+            __transferZone__
+            exit 0
+        ;;
+    esac
+
    case $ARG_01 in
         "-v"|"--version") printf "\nVersion: $VERSION\n"
               exit 0
