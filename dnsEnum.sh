@@ -20,6 +20,7 @@ RED='\033[31;1m'
 # Constantes armazenando os valores dos argumentos
 ARG_01=$1
 ARG_02=$2
+ARG_03=$3
 
 # Constante armazenando a versão do programa.
 VERSION='1.0'
@@ -65,7 +66,7 @@ __Help__() {
 # Verificação básica
 # ==============================================================================
 
-__basicCheck__() {
+__BasicCheck__() {
     # Verificando as dependências.
     if ! [[ -e /usr/bin/host ]]; then
         printf "\nFaltando programa ${RED}host${END} para funcionar.\n"
@@ -83,10 +84,10 @@ __basicCheck__() {
 # Descobrindo name servers (NS)
 # ==============================================================================
 
-__discoverNameServers__() {
-    echo "${PURPLE}############################################"
-    echo "           ${GREEN} Name Servers${END}        "
-    echo "${PURPLE}############################################${END}"
+__DiscoverNameServers__() {
+    echo -e "\n${PURPLE}###############################################"
+    echo "              ${GREEN} Name Servers${END}        "
+    echo "${PURPLE}###############################################${END}"
     host -t ns $ARG_01 | cut -d " " -f 4
 }
 
@@ -94,10 +95,10 @@ __discoverNameServers__() {
 # Descobrindo mail servers(MX)
 # ==============================================================================
 
-__discoverMailServers__() {
-    echo "${PURPLE}###########################################"
-    echo "           ${GREEN} Mail Servers${END}                   "
-    echo "${PURPLE}###########################################${END}"
+__DiscoverMailServers__() {
+    echo -e "\n${PURPLE}##############################################"
+    echo "              ${GREEN} Mail Servers${END}                   "
+    echo "${PURPLE}##############################################${END}"
     host -t mx $ARG_01 | cut -d " " -f 7
 }
 
@@ -105,10 +106,10 @@ __discoverMailServers__() {
 # Tentando transferir zona de todos os name servers
 # ==============================================================================
 
-__transferZone__() {
-    echo "${PURPLE}##########################################"
-    echo "         ${GREEN}Tentando transferir zona${END}         "
-    echo "${PURPLE}##########################################${END}"
+__TransferZone__() {
+    echo -e "\n${PURPLE}#############################################"
+    echo "            ${GREEN}Tentando transferir zona${END}         "
+    echo "${PURPLE}#############################################${END}"
     for server in $(host -t ns $ARG_01 | cut -d " " -f4)
     do
         host -l $ARG_01 $server
@@ -117,17 +118,51 @@ __transferZone__() {
 } 
 
 # ==============================================================================
+# Verificando arquivo passado no argumento.
+# ==============================================================================
+
+__CheckFile__() {
+    if [[ $ARG_03 == "" ]]; then
+        echo -e "\n${RED}!!! File required !!!${END}\n"
+        exit 1
+    elif ! [[ -e $ARG_03 ]]; then
+        printf "\n${RED}!!! File not found !!!${END}\n"
+        exit 1
+    fi
+}
+
+# ==============================================================================
+# Realizando o brute force de subdomínio.
+# ==============================================================================
+
+__SubdomainBruteForce__() {
+    echo -e "\n${PURPLE}###################################################"
+    echo "           ${GREEN}Realizando força bruta de subdomínio${END}    "
+    echo "${PURPLE}###################################################${END}"
+    for subdomain in $(cat $ARG_03)
+    do
+	result=$(host $subdomain.$ARG_01 | grep "has address")
+	if [[ $result ]]; then
+	    echo $result
+	    echo " "
+	fi
+    done
+}
+
+# ==============================================================================
 # Função principal do programa
 # ==============================================================================
 
 __Main__() {
-    __basicCheck__
+    __BasicCheck__
 
     case $ARG_02 in
-        "-ds"|"--ds") printf "Carregar worldlist"
-            __discoverNameServers__
-            __discoverMailServers__
-            __transferZone__
+        "-ds"|"--ds")
+	    __CheckFile__
+            __DiscoverNameServers__
+            __DiscoverMailServers__
+            __TransferZone__
+    	    __SubdomainBruteForce__
             exit 0
         ;;
     esac
@@ -139,9 +174,9 @@ __Main__() {
         "-h"|"--help") __Help__
               exit 0
         ;;
-        *) __discoverNameServers__
-           __discoverMailServers__
-           __transferZone__
+        *) __DiscoverNameServers__
+           __DiscoverMailServers__
+           __TransferZone__
         ;; 
 	esac  
 }
