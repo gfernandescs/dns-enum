@@ -31,16 +31,21 @@ VERSION='1.0'
 # ==============================================================================
 
 __Banner__() {
-    echo "#######################################################################"
+    echo "###########################################################################"
     echo "                                                                       "
     echo "-----------------------------------------------------------------------"
-    echo "--------------------- xFoo0T - DnsEnum - v$VERSION --------------------"
+    echo "									 "
+    echo "-----------------     xFoo0T - DnsEnum - v$VERSION     ----------------"
+    echo "									 "
     echo "-----------------------------------------------------------------------"
     echo "                                                                       "
-    echo "     ----- Example: ./dsnEnum.sh alvo.com.br worldlist.txt  -------    "
-    echo "    @@  worldlist para brute-force para descoberta de subdominios @@   "
+    echo "         ----- Example: ./dsnEnum.sh alvo.com.br   -------             "
+    echo "								 	 "
+    echo "        ++  use '-ds worldlist.txt' to subdomain brute force ++        "
     echo "                                                                       "
-    echo "#######################################################################"
+    echo -e "                    ${RED}HELP:${END} ./dsnEnum.sh --help                          "
+    echo "############################################################################"
+    echo ""
     exit 0
 }
 
@@ -53,12 +58,15 @@ __Help__() {
     \nNAME\n \
     \t$0 - Software para realizar a enumeração completa de DNS do host informado.\n \
     \nSYNOPSIS\n \
-    \t$0 [Options] [URL]\n \
+    \t$0 [Options] [URL] [Args]\n \
     \nOPTIONS\n \
     \t-h, --help\n \
     \t\tMostra o menu de ajuda.\n\n \
     \t-v, --version\n \
-    \t\tMostra a versão do programa.\n\n \
+    \t\tMostra a versão do programa.
+    \nARGS\n \
+    \t-ds, --ds\n \
+    \t\tRealiza a força bruta de subdomínio.\n\n \
     \n"
 }
 
