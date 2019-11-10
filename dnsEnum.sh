@@ -56,17 +56,17 @@ __Banner__() {
 __Help__() {
     printf "\
     \nNAME\n \
-    \t$0 - Software para realizar a enumeração completa de DNS do host informado.\n \
+    \t$0 - Software to perform a complete enumeration of the reported host's DNS.\n \
     \nSYNOPSIS\n \
     \t$0 [Options] [URL] [Args]\n \
     \nOPTIONS\n \
     \t-h, --help\n \
-    \t\tMostra o menu de ajuda.\n\n \
+    \t\tShow help menu.\n\n \
     \t-v, --version\n \
-    \t\tMostra a versão do programa.
+    \t\tShow program version.
     \nARGS\n \
     \t-ds, --ds\n \
-    \t\tRealiza a força bruta de subdomínio.\n\n \
+    \t\tPerform subdomain brute force.\n\n \
     \n"
 }
 
